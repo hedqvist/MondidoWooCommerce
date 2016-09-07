@@ -482,7 +482,7 @@ EOT;
                 $t = $mondido->fetch_transaction_from_API($t['id'], $_POST['id']);
                 if($t != null && $t['status'] == 'approved'){
                     $order->update_status('processing', __( 'Mondido payment captured!', 'woocommerce' ));
-					$order->add_order_note('changed order to processing, line 485'));
+					$order->add_order_note('changed order to processing, line 485');
                 }
                 $res = json_decode($response['body'],true);
                 if($res['description']){
