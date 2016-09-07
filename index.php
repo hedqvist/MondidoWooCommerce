@@ -835,7 +835,8 @@ HTML;
                     // {
                         // WC()->mailer()->emails['WC_Email_Customer_Processing_Order']->trigger($order->id);
                     // }
-                    // WC()->mailer()->emails['WC_Email_New_Order']->trigger($order->id);                }
+                    // WC()->mailer()->emails['WC_Email_New_Order']->trigger($order->id);
+					}
             }
             echo 'ok'; 
             http_response_code(200);
