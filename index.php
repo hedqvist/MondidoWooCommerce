@@ -20,9 +20,9 @@ add_action( 'wp_footer', array( 'WC_Gateway_Mondido', 'marketing_footer' ) );
 add_action( 'woocommerce_product_options_pricing', 'wc_rrp_product_field' );	
 
 //subscriptions
-add_action( 'woocommerce_process_product_meta', 'woo_add_custom_general_fields_save' );
-add_filter( 'woocommerce_cart_needs_payment', 'cart_needs_payment_filter', 10, 2 ); 
-add_filter( 'woocommerce_order_needs_payment', 'order_needs_payment_filter', 10, 3 ); 
+//add_action( 'woocommerce_process_product_meta', 'woo_add_custom_general_fields_save' );
+//add_filter( 'woocommerce_cart_needs_payment', 'cart_needs_payment_filter', 10, 2 ); 
+//add_filter( 'woocommerce_order_needs_payment', 'order_needs_payment_filter', 10, 3 ); 
 
 
 //For subscriptions
@@ -495,6 +495,7 @@ EOT;
             if($transaction['status'] == 'approved'){
                 $order->payment_complete( $transaction['id'] );
 				//Logging this payment_complete()
+				$order->add_order_note(sprintf( __( 'Transaction ID: %s ', 'woocommerce' ), $transaction['id'] ));
 				$order->add_order_note('order is now marked as payment_complete() Woo is setting next order status, line 498');
                 $log = new WC_Logger();
                 $log->add( 'mondido capture ','success' );
@@ -767,6 +768,7 @@ HTML;
                         $order->add_order_note( sprintf( __( 'Webhook callback transaction approved %s ', 'woocommerce' ), $transaction['id'] ));
                         $order->payment_complete();
 						//Logging this payment_complete()
+						$order->add_order_note(sprintf( __( 'Transaction ID: %s ', 'woocommerce' ), $transaction['id'] ));
 						$order->add_order_note('order is now marked as payment_complete() Woo is setting next order status, line 770');
                     }elseif($status == 'declined'){
                         $order->update_status('failed', __( 'Mondido payment declined!', 'woocommerce' ));
@@ -1005,6 +1007,7 @@ HTML;
                         // WC()->mailer()->emails['WC_Email_New_Order']->trigger($order->id);
                         $order->payment_complete($posted['transaction_id']);
 						//Logging this payment_complete()
+						$order->add_order_note(sprintf( __( 'Transaction ID: %s ', 'woocommerce' ), $posted['transaction_id']));
 						$order->add_order_note('order is now marked as payment_complete() Woo is setting next order status, line 1008');
                     }elseif($status == 'approved'){
                         // Payment Complete
@@ -1020,6 +1023,7 @@ HTML;
                         update_post_meta( $order->id, 'mondido-transaction-status', 'approved' );
                         $order->payment_complete($posted['transaction_id']);
 						//Logging this payment_complete()
+						$order->add_order_note(sprintf( __( 'Transaction ID: %s ', 'woocommerce' ), $posted['transaction_id']));
 						$order->add_order_note('order is now marked as payment_complete() Woo is setting next order status, line 1023');
 						// Remove Mailer triggers, should be via order status
                         // WC()->mailer()->emails['WC_Email_New_Order']->trigger($order->id);
